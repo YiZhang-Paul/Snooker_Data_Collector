@@ -1,0 +1,29 @@
+{
+  "name": "data_collector",
+  "version": "1.0.0",
+  "description": "auto data collection from third-party APIs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "dev": "nodemon app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YiZhang-Paul/Snooker_Data_Collector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YiZhang-Paul/Snooker_Data_Collector/issues"
+  },
+  "homepage": "https://github.com/YiZhang-Paul/Snooker_Data_Collector#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.3.7"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.5"
+  }
+}
