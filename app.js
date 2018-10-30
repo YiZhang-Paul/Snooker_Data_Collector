@@ -17,9 +17,8 @@ database.once('open', () => {
         if (++counter === total) {
 
             console.log('Data collection finished.');
+            database.close();
         }
-
-        database.close();
     }
 
     const collectors = [
