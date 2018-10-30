@@ -43,7 +43,7 @@ context('collector test', () => {
     describe('collect()', () => {
 
         let fetchStub;
-        const response = { data: 'some data' };
+        const response = 'some data';
 
         beforeEach('stub/spy on collector methods', () => {
 
@@ -63,7 +63,7 @@ context('collector test', () => {
 
             collector.collect().then(() => {
 
-                expect(collector.store.calledOnceWith(response.data)).to.be.true;
+                expect(collector.store.calledOnceWith(response)).to.be.true;
 
             }).then(done, done);
         });

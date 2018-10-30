@@ -47,7 +47,7 @@ class PlayerCollector extends Collector {
 
         return Promise.all(playerGroups).then(groups => {
 
-            return { data: _.uniqBy(_.flatten(groups), 'ID') };
+            return _.uniqBy(_.flatten(groups), 'ID');
         })
     }
 

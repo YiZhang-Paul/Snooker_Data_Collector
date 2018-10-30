@@ -18,7 +18,7 @@ class Collector {
 
         return this.fetch().then(response => {
 
-            return this.store(response.data);
+            return this.store(response);
         });
     }
 }

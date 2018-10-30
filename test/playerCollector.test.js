@@ -55,7 +55,7 @@ context('player collector test', () => {
         const playerA = { ID: 1, name: 'A' };
         const playerB = { ID: 2, name: 'B' };
         const playerC = { ID: 3, name: 'C' };
-        const expectedData = { data: [playerA, playerB, playerC] };
+        const expectedData = [playerA, playerB, playerC];
 
         let lodashRangeStub;
         let axiosGetStub;
@@ -63,7 +63,7 @@ context('player collector test', () => {
         beforeEach('stub methods', () => {
 
             lodashRangeStub = sinon.stub(_, 'range').returns([1, 2, 3]);
-            axiosGetStub = sinon.stub(axios, 'get').resolves(expectedData);
+            axiosGetStub = sinon.stub(axios, 'get').resolves({ data: expectedData });
         });
 
         it('should combine players from every year into one collection without duplication', done => {
