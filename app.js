@@ -1,14 +1,36 @@
-const express = require('express');
-const app = express();
+const database = require('./database');
+const PlayerCollector = require('./collectors/playerCollector');
 
-const port = process.env.PORT || 3200;
+database.on('error', () => console.log(error));
 
-app.get('/', (req, res) => {
+database.once('open', () => {
 
-    res.sendStatus(200);
-});
+    let counter = 0;
 
-app.listen(port, () => {
+    console.log('Database connected successfully.');
+    console.log('Data collection started...');
 
-    console.log(`Server started listening on port ${port}.`);
+    const checkProgress = (result, total) => {
+
+        console.log(result);
+
+        if (++counter === total) {
+
+            console.log('Data collection finished.');
+        }
+
+        database.close();
+    }
+
+    const collectors = [
+
+        new PlayerCollector(database.db)
+    ];
+
+    collectors.forEach(collector => {
+
+        collector.collect()
+            .then(result => checkProgress(result, collectors.length))
+            .catch(error => checkProgress(error, collectors.length));
+    });
 });

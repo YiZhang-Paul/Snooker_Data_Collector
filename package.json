@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app",
     "dev": "nodemon app",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "repository": {
     "type": "git",
@@ -20,10 +20,14 @@
   },
   "homepage": "https://github.com/YiZhang-Paul/Snooker_Data_Collector#readme",
   "dependencies": {
-    "express": "^4.16.4",
+    "axios": "^0.18.0",
+    "lodash": "^4.17.11",
     "mongoose": "^5.3.7"
   },
   "devDependencies": {
-    "nodemon": "^1.18.5"
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.5",
+    "sinon": "^7.1.0"
   }
 }
