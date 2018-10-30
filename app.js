@@ -1,9 +1,9 @@
-const database = require('./database');
+const connection = require('mongoose_model').connection;
 const PlayerCollector = require('./collectors/playerCollector');
 
-database.on('error', () => console.log(error));
+connection.on('error', () => console.log(error));
 
-database.once('open', () => {
+connection.once('open', () => {
 
     let counter = 0;
 
@@ -17,13 +17,13 @@ database.once('open', () => {
         if (++counter === total) {
 
             console.log('Data collection finished.');
-            database.close();
+            connection.close();
         }
     }
 
     const collectors = [
 
-        new PlayerCollector(database.db)
+        new PlayerCollector(connection.db)
     ];
 
     collectors.forEach(collector => {

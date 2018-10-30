@@ -22,7 +22,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "lodash": "^4.17.11",
-    "mongoose": "^5.3.7"
+    "mongoose": "^5.3.7",
+    "mongoose_model": "github:YiZhang-Paul/Snooker_Data_Mongoose_Model"
   },
   "devDependencies": {
     "chai": "^4.2.0",

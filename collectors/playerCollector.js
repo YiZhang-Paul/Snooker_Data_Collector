@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const axios = require('axios');
 const Collector = require('./collector');
-const PlayerModel = require('../models/playerModel');
+const PlayerModel = require('mongoose_model').Player;
 
 class PlayerCollector extends Collector {
 
