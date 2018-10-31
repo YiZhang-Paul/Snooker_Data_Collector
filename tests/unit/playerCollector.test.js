@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 const _ = require('lodash');
 const axios = require('axios');
-const PlayerCollector = require('../collectors/playerCollector');
+const PlayerCollector = require('../../collectors/playerCollector');
 
 context('player collector test', () => {
 

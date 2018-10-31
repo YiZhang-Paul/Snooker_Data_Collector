@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app",
     "dev": "nodemon app",
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test-unit": "mocha tests/unit/ --reporter spec",
+    "test-int": "mocha tests/integration/ --reporter spec"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
-const Collector = require('../collectors/collector');
+const Collector = require('../../collectors/collector');
 
 context('collector test', () => {
 
