@@ -109,6 +109,17 @@ context('player collector test', () => {
             }).then(done, done);
         });
 
+        it('should not drop collection if it does not exist before saving new data', done => {
+
+            getCollectionStub.resolves(null);
+
+            collector.store([]).then(() => {
+
+                expect(database.dropCollection.notCalled).to.be.true;
+
+            }).then(done, done);
+        });
+
         it('should drop collection if it already exists before saving new data', done => {
 
             getCollectionStub.resolves(collection);
@@ -122,9 +133,10 @@ context('player collector test', () => {
 
         it('should save every player fetched to database', done => {
 
+            const players = [{}, {}, {}];
             sinon.stub(playerModel, 'save').resolves({});
 
-            collector.store([{}, {}, {}]).then(() => {
+            collector.store(players).then(() => {
 
                 expect(playerModel.save.calledThrice).to.be.true;
 
@@ -133,11 +145,12 @@ context('player collector test', () => {
 
         it('should record total number of failed database insertion', done => {
 
+            const players = [{}, {}, {}];
             sinon.stub(playerModel, 'save').rejects();
 
-            collector.store([{}, {}, {}]).then(result => {
+            collector.store(players).then(result => {
 
-                expect(result.failed).to.equal(3);
+                expect(result.failed).to.equal(players.length);
 
             }).then(done, done);
         });
