@@ -1,3 +1,4 @@
+const config = require('config');
 const _ = require('lodash');
 const axios = require('axios');
 const Collector = require('./collector');
@@ -42,7 +43,9 @@ class PlayerCollector extends Collector {
 
     fetch() {
 
-        const years = _.range(2013, new Date().getFullYear() + 1);
+        const startYear = config.collection_start_year;
+        const endYear = new Date().getFullYear();
+        const years = _.range(startYear, endYear + 1);
         const playerGroups = years.map(this.playersInYear);
 
         return Promise.all(playerGroups).then(groups => {

@@ -4,5 +4,6 @@
 
         "host": "localhost",
         "name": "snooker_collector_dev"
-    }
+    },
+    "collection_start_year": 2013
 }
