@@ -1,0 +1,8 @@
+{
+
+    "dbConfig": {
+
+        "host": "localhost",
+        "name": "snooker_collector_dev"
+    }
+}
