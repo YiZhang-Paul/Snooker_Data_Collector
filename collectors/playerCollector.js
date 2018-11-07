@@ -15,7 +15,15 @@ class PlayerCollector extends Collector {
 
         const url = `http://api.snooker.org/?t=10&st=p&s=${year}`;
 
-        return axios.get(url).then(response => response.data);
+        return axios.get(url).then(response => {
+
+            response.data.forEach(record => {
+
+                record.year = year;
+            });
+
+            return response.data;
+        });
     }
 
     toPlayerModel(record) {
@@ -37,8 +45,29 @@ class PlayerCollector extends Collector {
             twitter: record.Twitter,
             image: record.Photo,
             turned_pro: record.FirstSeasonAsPro,
-            last_season_played: record.LastSeasonAsPro
+            last_season_played: record.LastSeasonAsPro,
+            active_years: record.activeYears
         });
+    }
+
+    mergeDuplicates(players) {
+
+        const merged = new Map();
+
+        players.forEach(player => {
+
+            const id = player.ID;
+
+            if (!merged.has(id)) {
+
+                player.activeYears = [];
+                merged.set(id, player);
+            }
+
+            merged.get(id).activeYears.push(player.year);
+        });
+
+        return Array.from(merged.values());
     }
 
     fetch() {
@@ -50,7 +79,7 @@ class PlayerCollector extends Collector {
 
         return Promise.all(playerGroups).then(groups => {
 
-            return _.uniqBy(_.flatten(groups), 'ID');
+            return this.mergeDuplicates(_.flatten(groups));
         })
     }
 

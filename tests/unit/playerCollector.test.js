@@ -18,7 +18,7 @@ context('player collector test', () => {
     describe('playersInYear()', () => {
 
         let axiosGetStub;
-        const response = { data: 'some data' };
+        const response = { data: [{}] };
 
         beforeEach('stub axios get method', () => {
 
@@ -44,33 +44,92 @@ context('player collector test', () => {
             }).then(done, done);
         });
 
+        it('should include the year the data was originated', done => {
+
+            const year = 2017;
+            axiosGetStub.resolves({ data: [{ ID: 1 }, { ID: 2 }, { ID: 3 }] });
+
+            collector.playersInYear(year).then(data => {
+
+                expect(data.every(record => record.year === year)).to.be.true;
+
+            }).then(done, done);
+        });
+
         afterEach('restore axios', () => {
 
             axiosGetStub.restore();
         });
     });
 
-    describe('fetch()', () => {
+    describe('mergeDuplicates', () => {
 
-        const playerA = { ID: 1, name: 'A' };
-        const playerB = { ID: 2, name: 'B' };
-        const playerC = { ID: 3, name: 'C' };
-        const expectedData = [playerA, playerB, playerC];
+        let allPlayers;
+
+        beforeEach('initialize test input', () => {
+
+            const players2015 = [{ ID: 1, year: 2015 }, { ID: 2, year: 2015 }, { ID: 3, year: 2015 }];
+            const players2016 = [{ ID: 1, year: 2016 }, { ID: 2, year: 2016 }];
+            const players2017 = [{ ID: 1, year: 2017 }, { ID: 3, year: 2017 }];
+            allPlayers = [...players2015, ...players2016, ...players2017];
+        });
+
+        it('should merge duplicate players by player IDs', () => {
+
+            const merged = collector.mergeDuplicates(allPlayers);
+
+            expect(merged.length).to.equal(3);
+            expect(merged[0].ID).to.equal(1);
+            expect(merged[1].ID).to.equal(2);
+            expect(merged[2].ID).to.equal(3);
+        });
+
+        it('should include duplicate (active) years in player records', () => {
+
+            const merged = collector.mergeDuplicates(allPlayers);
+
+            expect(merged[0].activeYears).to.deep.equal([2015, 2016, 2017]);
+            expect(merged[1].activeYears).to.deep.equal([2015, 2016]);
+            expect(merged[2].activeYears).to.deep.equal([2015, 2017]);
+        });
+    });
+
+    describe('fetch()', () => {
 
         let lodashRangeStub;
         let axiosGetStub;
 
-        beforeEach('stub methods', () => {
+        beforeEach('stub methods and initialize test input', () => {
 
-            lodashRangeStub = sinon.stub(_, 'range').returns([1, 2, 3]);
-            axiosGetStub = sinon.stub(axios, 'get').resolves({ data: expectedData });
+            const players2015 = [{ ID: 1 }, { ID: 2 }];
+            const players2016 = [{ ID: 1 }, { ID: 3 }];
+            const players2017 = [{ ID: 1 }, { ID: 2 }, { ID: 3 }];
+            lodashRangeStub = sinon.stub(_, 'range').returns([2015, 2016, 2017]);
+            axiosGetStub = sinon.stub(axios, 'get');
+            axiosGetStub.onCall(0).resolves({ data: players2015 });
+            axiosGetStub.onCall(1).resolves({ data: players2016 });
+            axiosGetStub.resolves({ data: players2017 });
+        });
+
+        it('should include active years of a player in its record', done => {
+
+            collector.fetch().then(result => {
+
+                expect(result[0].activeYears).to.deep.equal([2015, 2016, 2017]); // player A is active in all three years
+                expect(result[1].activeYears).to.deep.equal([2015, 2017]);       // player B is not active in 2016
+                expect(result[2].activeYears).to.deep.equal([2016, 2017]);       // player C is not active in 2015
+
+            }).then(done, done);
         });
 
         it('should combine players from every year into one collection without duplication', done => {
 
             collector.fetch().then(result => {
 
-                expect(result).to.deep.equal(expectedData);
+                expect(result.length).to.equal(3);
+                expect(result[0].ID).to.equal(1);
+                expect(result[1].ID).to.equal(2);
+                expect(result[2].ID).to.equal(3);
 
             }).then(done, done);
         });
