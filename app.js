@@ -1,8 +1,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 global.config = require('config');
 
-console.log('updated');
-
 const connection = require('mongoose_model').connection;
 const PlayerCollector = require('./collectors/playerCollector');
 
