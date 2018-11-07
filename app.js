@@ -4,7 +4,7 @@ global.config = require('config');
 const connection = require('mongoose_model').connection;
 const PlayerCollector = require('./collectors/playerCollector');
 
-connection.on('error', () => console.log(error));
+connection.on('error', error => console.log(error));
 
 connection.once('open', () => {
 

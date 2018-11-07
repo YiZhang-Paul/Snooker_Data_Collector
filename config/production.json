@@ -2,6 +2,7 @@
 
     "dbConfig": {
 
-        "name": "snooker_data_production"
+        "host": "ds155263.mlab.com:55263",
+        "name": "snooker-data"
     }
 }
